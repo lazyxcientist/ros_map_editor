@@ -160,14 +160,15 @@ class MapEditor(QtWidgets.QMainWindow):
         fn_yaml = os.path.splitext(fn)[0] + '.yaml'
         try:
             stream = open(fn_yaml, "r")
-            docs = yaml.load_all(stream)
+            docs = yaml.load_all(stream,Loader=yaml.FullLoader)
             for doc in docs:
                 self.occupied_thresh = doc['occupied_thresh']  # probability its occupied
                 self.free_thresh = doc['free_thresh']  # probability its uncertain or occupied
                 self.resolution = doc['resolution']    # in meters per cell
                 self.origin_x = doc['origin'][0]
                 self.origin_y = doc['origin'][1]
-        except:
+        except Exception as e:
+            print(e)
             print("ERROR:  Corresponding YAML file", fn_yaml, "is missing or incorrectly formatted.")
             sys.exit(1) 
 
